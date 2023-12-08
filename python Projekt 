@@ -1,0 +1,17 @@
+class MyClass:
+    def __init__(self, name, alte):
+        self.name = name
+        self.alte = alte
+
+    def getName(self):
+        return self.name
+
+    def getAlte(self):
+        return self.alte
+
+    def ausgabe(self):
+        print("Name: " + self.getName())
+        print("Alter: " + self.getAlte())
+
+# Example of how to use the class and call the method in console:
+obj = MyClass("John", 25)
