@@ -1,0 +1,59 @@
+class Kurs:
+    def __init__(self, bezeichnung: str,beschreibung: str, preis: float):
+        self.__bezeichnung = bezeichnung
+        self.__beschreibung = beschreibung
+        self.__preis = preis
+
+    def setName(self, neueBezeichnung: str):
+        self.__bezeichnung = neueBezeichnung
+
+    def setPreis(self, neuerPreis: float):
+        self.__preis = neuerPreis
+
+    def setBeschreibung(self, beschreibung: str):
+        self.__beschreibung = beschreibung
+
+    def getBezeichnung(self):
+        return self.__bezeichnung
+
+    def getPreis(self):
+        return float(self.__preis)
+
+    def getBeschreibung(self):
+        return str(self.__beschreibung)
+
+    def ausgabe(self):
+        print("Kurs:", self.__bezeichnung,
+              "\nBeschreibung:", self.__beschreibung,
+              "\nPreis:", self.__preis, "€")
+
+
+class Fitnesskurs(Kurs):
+    def __init__(self, bezeichnung: str, beschreibung: str, preis: float, dauer: int, raum: str):
+        super().__init__(bezeichnung, beschreibung, preis)
+        self.__dauer = dauer
+        self.__raum = raum
+
+    def ausgabe(self):
+        super().ausgabe()
+        print("Dauer:", self.__dauer, "Minuten\nRaum:", self.__raum)
+
+
+class Ballkurs(Kurs):
+    def __init__(self, bezeichnung: str, beschreibung: str, preis: float, gruppe: str, zubehoer: str):
+        super().__init__(bezeichnung, beschreibung, preis)
+        self.__gruppe = gruppe
+        self.__zubehoer = zubehoer
+
+    def ausgabe(self):
+        super().ausgabe()
+        print("Gruppe:", self.__gruppe, "\nZubehör:", self.__zubehoer)
+
+
+# Example usage:
+fitness_kurs = Fitnesskurs("FitClass", "Fitness class description", 20.0, 60, "Studio")
+ball_kurs = Ballkurs("BallClass", "Ball class description", 15.0, "Beginners", "Ball")
+
+fitness_kurs.ausgabe()
+print("\n")
+ball_kurs.ausgabe()
