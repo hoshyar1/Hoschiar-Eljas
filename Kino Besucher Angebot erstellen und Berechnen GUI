@@ -1,0 +1,99 @@
+Lnamen = []
+Lalter = []
+LnormalPreis = []
+LanzahlBesuche = []
+LneuerPreis = []
+listeKinobesuche = {}
+# Es sollen hier keine weiteren globalen Variablen deklariert werden!!!
+def getErmaessigung(alter,anzahlBesuche,preis):
+    if alter<10 & alter == 0:
+        if anzahlBesuche>=25:
+            return 1.5 + preis * 0.18
+        elif anzahlBesuche>=10: 
+            return 1.5 + preis * 0.12 
+        else:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+            return 1.5
+    else:
+        if anzahlBesuche>=25:
+            return 1.0 + preis * 0.18
+        elif anzahlBesuche>=10: 
+            return 1.0 + preis * 0.12
+        else: 
+            return 1.0 
+def getErmaessigterPreis(alter,anzahlBesuche,preis):
+    return round(preis - getErmaessigung(alter,anzahlBesuche,preis),2)
+def infoAusgabe(name,alter,anzahlBesuche,preis):
+    from datetime import date
+    heute = date.today()
+    print("")
+    print("JUBILÄUMSAKTION BIStar-Kino")
+    print("")
+    print("Aktuelles Datum: ", heute)
+    print("Name:            ", name)
+    print("Alter:         : ", alter, " Jahre")
+    print("Regulärer Preis: ", round(preis,2) , " EUR")
+    print("Kinobesuche    : ", anzahlBesuche)
+    print("")
+    print("Ermäßigung:    :            ", round(getErmaessigung(alter,anzahlBesuche,preis),2), " EUR")
+    print("Ermäßigter Kinokartenpreis: ", getErmaessigterPreis(alter,anzahlBesuche,preis), " EUR")
+    print("")
+    
+def valueAusgabe(alter, anzahlBesuche, preis):
+    return ("Alter: ", alter, "Normaler Preis: ", round(preis,3), " Kinobesuche: ", anzahlBesuche, " Neuer Preis: ", getErmaessigterPreis(alter,anzahlBesuche,preis))
+    
+def listenAusgabe():
+    print("")
+    print("Listenausgabe: ")
+    #Ausgabe Listen
+    for n in Lnamen:
+        print(n)
+    #oder
+    print(Lnamen)
+    print(Lalter)
+    print(LnormalPreis)
+    print(LanzahlBesuche)
+    print(LneuerPreis)
+    print("")
+    
+    
+    #Ausgabe Dictionary
+    print("Ausgabe Dictionary: ")    
+    for key in listeKinobesuche:
+        print(key, listeKinobesuche[key])
+    print("")                 
+    
+def main():
+    Angaben=[]
+    abfrage = input("Möchten Sie den Kinopreis ermitteln? (J/N)) ")
+    if abfrage == "J":
+        #Eingaben
+        name= input("Name: ")
+        preis= float(input("Preis: "))
+        alter = int(input("Alter: "))
+        anzahlBesuche= int(input("Anzahl Kinobesuche: "))
+        #Listen/Dictionary-Ausgaben
+        i = 0
+        # falsch Lnamen[i]= "xyz"
+        #name = Lnamen[i]
+        Lnamen.append(name)
+        name = Lnamen[i]
+        Lalter.append(alter)
+        LnormalPreis.append(preis)
+        LanzahlBesuche.append(anzahlBesuche)
+        LneuerPreis.append(getErmaessigterPreis(alter,anzahlBesuche,preis))
+        listeKinobesuche[name]= str(valueAusgabe(alter,anzahlBesuche,preis))
+        Angaben.append(valueAusgabe(alter, anzahlBesuche, preis))
+                                   
+        #Konsolen-Ausgabe nach jeder Preisermittlung                   
+        infoAusgabe(name,alter,anzahlBesuche,preis)
+  
+        main()
+    else:
+        print("")
+        print("Kinobesuche: ")
+        print("")
+        for i in range(0,len(Angaben)):
+            print(Angaben[i])
+        listenAusgabe()
+        
+main()
