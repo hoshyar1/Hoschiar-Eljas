@@ -1,0 +1,64 @@
+from flask import Flask, render_template
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
+import yfinance as yf
+import threading
+import time
+
+app = Flask(__name__)
+
+# Klasse für die Aktienanwendung
+class StockApp:
+    def __init__(self, symbol):
+        self.symbol = symbol
+        self.fig, self.ax = plt.subplots() 
+ # Erstellt ein Diagramm und eine Achse für die Visualisierung
+
+    def get_stock_info(self):
+        stock = yf.Ticker(self.symbol)
+        info = stock.info
+        return info
+
+    def update_plot(self):
+        info = self.get_stock_info()
+        self.ax.clear()  
+# Leert die vorhandene Achse, um das Diagramm zu aktualisieren
+        self.ax.bar(info.keys(), info.values()) 
+ # Erstellt ein Balkendiagramm mit den Aktieninformationen
+        self.ax.set_title(f"Aktieninformationen für {self.symbol}")  
+#Setzt den Titel des Diagramms
+
+# Flask-Route für die Hauptseite ('/')
+@app.route('/')
+def index():
+    stock_symbol = "AAPL"
+    app = StockApp(stock_symbol) 
+ # Erstellt eine Instanz der Aktienanwendung für das Aktiensymbol 'AAPL'
+    app.update_plot() 
+ # Aktualisiert das Diagramm mit den aktuellen Aktieninformationen
+
+    canvas = FigureCanvas(app.fig) 
+ # Verwendet das Diagramm für das Canvas-Objekt von Matplotlib
+    img = io.BytesIO()
+    app.fig.savefig(img)  
+# Speichert das Diagramm als Bild im BytesIO-Objekt
+    img.seek(0)
+
+    return render_template('index.html', image=img.getvalue().decode('base64'))  
+# Rendert die HTML-Vorlage mit dem Bild
+
+# Funktion für die kontinuierliche Aktualisierung des Diagramms im Hintergrund
+def live_update():
+    while True:
+        time.sleep(5)  
+# Wartet 5 Sekunden (kann anpassbar sein)
+        app.update_plot()  
+# Ruft die Methode zum Aktualisieren des Diagramms auf
+
+# Startet einen Hintergrund-Thread für die kontinuierliche Aktualisierung
+if __name__ == '__main__':
+    thread = threading.Thread(target=live_update)
+    thread.daemon = True
+    thread.start()
+    app.run(debug=True) 
+ # Startet die Flask-Anwendung im Debug-Modus
